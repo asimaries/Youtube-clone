@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { CHANNEL_API, formatter } from "../constants"
+import { CHANNEL_INFO_API, formatter } from "../constants"
 import { useEffect, useRef, useState } from "react"
 
 
@@ -26,7 +26,7 @@ export default function VideoCard({ video }: { video: Video }) {
 
   useEffect(() => {
     async function getChannelLogo() {
-      const url = await CHANNEL_API(channelId).then(url => url)
+      const url = await CHANNEL_INFO_API(channelId).then(url => url)
       setChannelLogo(url)
     }
     getChannelLogo()
@@ -34,7 +34,7 @@ export default function VideoCard({ video }: { video: Video }) {
   // console.log(`render VideoCard ${title}`)
   return (
     <Link to={`/watch?v=${video.id}`}>
-      <div className="w-56 m-1 p-1 rounded hover:bg-neutral-800 hover:bg-opacity-70 transition"
+      <div className="w-72 m-1 p-1 rounded hover:bg-neutral-800 hover:bg-opacity-70 transition"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         title={title}>
@@ -52,7 +52,7 @@ export default function VideoCard({ video }: { video: Video }) {
             alt={title} />)
         }
         <div className="flex justify-between p-1">
-          {/* {console.log(CHANNEL_API(channelId))} */}
+          {/* {console.log(CHANNEL_INFO_API(channelId))} */}
           <img className=' h-8 rounded-full' src={channelLogo} alt="" />
           <ul className="ml-1">
             <li className="font-semibold text-xs">{title}</li>
