@@ -22,7 +22,7 @@ const formatter = (num: string) => {
   return Intl.NumberFormat('en', { notation: 'compact' }).format(Number(num))
 }
 
-const SEARCH_AUTOCOMPLETE_API = 'http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q='
+const SEARCH_AUTOCOMPLETE_API = 'https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q='
 
 const SEARCH_QUERY_API = (search_query: string | null, pageToken?: string) => {
   if (search_query == null) return ''
