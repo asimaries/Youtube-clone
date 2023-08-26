@@ -6,7 +6,7 @@ export default function FlatVideoCard({ video }: { video: VideoInfo }) {
   const { videoId } = video.id
   const { thumbnails, title, channelTitle, liveBroadcastContent } = video.snippet
   // const { url, width, height } = thumbnails.high
-  console.log('rendering flatvideocard')
+  // console.log('rendering flatvideocard')
   return (
     <Link to={`/watch?v=${videoId}`}>
       <div className="flex w-[52rem] my-1 rounded-lg hover:bg-opacity-5 hover:bg-white">

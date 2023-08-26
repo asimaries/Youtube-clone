@@ -14,7 +14,7 @@ function Head() {
     dispatch(toggleMenu())
   }
 
-  console.log('rendered')
+  // console.log('rendered')
   return (
     <div className='p-2 flex justify-between items-center sticky top-0 bg-neutral-900'>
       <div className='flex justify-between'>

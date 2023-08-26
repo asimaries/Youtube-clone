@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: {
-  [key: string]: { videosList: VideoInfo[]},
+  [key: string]: { videosList: VideoInfo[] },
 
 } = {}
 
@@ -13,10 +13,10 @@ const searchedVideoSlice = createSlice({
       payload: { key: string, videosList: VideoInfo[] }
     }) => {
       const { key, videosList } = action.payload;
-      console.log(key, videosList)
+      // console.log(key, videosList)
 
       if (state[key] == undefined)
-        state[key] = { videosList: []}
+        state[key] = { videosList: [] }
 
       state[key].videosList = [
         ...state[key].videosList,

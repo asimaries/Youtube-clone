@@ -24,7 +24,7 @@ export default function SearchBar() {
   const searchCache = useSelector((store: RootState) => store.search)
 
   const getSuggestions = async () => {
-    console.log(`API CALL ${searchQuery}`)
+    // console.log(`API CALL ${searchQuery}`)
     const { data } = await axios(SEARCH_AUTOCOMPLETE_API + searchQuery)
     setSuggestions(data[1])
     dispatch(cacheResults({ [searchQuery]: data[1] }))
@@ -45,9 +45,9 @@ export default function SearchBar() {
   }, [searchQuery])
 
   useEffect(() => {
-    console.log(transcribedText)
+    // console.log(transcribedText)
     setSearchQuery(transcribedText)
-    console.log(isDone)
+    // console.log(isDone)
     if (isDone) formRef.current?.click()
   }, [transcribedText, isDone])
 
@@ -93,7 +93,7 @@ export default function SearchBar() {
     let data: Array<string> = getLocalItem('lastSearch')
     // console.log(data)
     data = data.filter((value) => value !== element)
-    console.log(data)
+    // console.log(data)
     setLocalItem('lastSearch', data)
     setLastSearch(data)
   }
@@ -138,8 +138,14 @@ export default function SearchBar() {
           </div> : null}
         </div>
       </div>
-      <button type='button'
-        disabled={listingStatus} ref={toggleButtonRef} className='mx-8 bg-neutral-600 bg-opacity-40 hover:bg-opacity-80 p-3 rounded-full disabled:opacity-20'> <BsFillMicFill /> </button>
+      <div className='relative flex flex-col justify-center'>
+        <button type='button'
+          disabled={listingStatus} ref={toggleButtonRef} className='border mx-8 bg-neutral-600 bg-opacity-40 hover:bg-opacity-80 p-3 rounded-full disabled:opacity-20'> <BsFillMicFill />
+        </button>
+        <span className={`absolute -right-16 border bg-neutral-900 p-2 rounded shadow opacity-100 text-sm ${listingStatus ? 'block' : 'hidden'}`}>
+          Listening...
+        </span>
+      </div>
     </form>
   )
 }

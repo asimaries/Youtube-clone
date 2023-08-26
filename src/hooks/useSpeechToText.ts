@@ -26,7 +26,7 @@ export default function useSpeechToText() {
     }
   }
   recognition.onend = function () {
-    console.log('end')
+    // console.log('end')
     setListingStatus(false)
     setisDone(true)
   }
