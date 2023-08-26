@@ -6,7 +6,7 @@ import { SEARCH_AUTOCOMPLETE_API } from '../constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store'
 import { cacheResults } from '../store/searchSlice'
-import { Form, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import useSpeechToText from '../hooks/useSpeechToText'
 
 export default function SearchBar() {
@@ -82,7 +82,7 @@ export default function SearchBar() {
     navigate(`/results?search_query=${searchQuery}`)
   }
 
-  function searchElement(event: React.MouseEvent<HTMLSpanElement>, value: string) {
+  function searchElement(value: string) {
     setSearchQuery(value)
     inputRef.current!.value = value
   }
@@ -124,13 +124,13 @@ export default function SearchBar() {
           >
             <div className='flex flex-col'>
               {lastSearch.map((ele) => (
-                <button onClick={(e) => searchElement(e, ele)} className=' flex justify-between items-center rounded-full  hover:bg-neutral-700' key={ele} >
+                <button onClick={() => searchElement(ele)} className=' flex justify-between items-center rounded-full  hover:bg-neutral-700' key={ele} >
                   <div className='px-3 py-1'>{ele}</div>
                   <div onClick={(e) => removeElement(e, ele)} className='  text-red-500 px-2 hover:underline transition'>remove</div>
                 </button>
               ))}
               {suggestions.map((ele) => (
-                <button onClick={(e) => searchElement(e, ele)} className=' flex justify-between items-center rounded-full  hover:bg-neutral-700' key={ele}>
+                <button onClick={() => searchElement(ele)} className=' flex justify-between items-center rounded-full  hover:bg-neutral-700' key={ele}>
                   <div className='px-3 py-1'>{ele}</div>
                 </button>
               ))}

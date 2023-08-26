@@ -39,7 +39,7 @@ export default function Watch() {
           <div className=''>
             <iframe
               className='aspect-video w-[1000px]'
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=0&mute=1`}
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
               autoFocus
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen></iframe>

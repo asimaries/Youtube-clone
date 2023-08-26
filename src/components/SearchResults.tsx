@@ -3,9 +3,9 @@ import { SEARCH_QUERY_API } from "../constants"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import FlatVideoCard from "./FlatVideoCard"
-import { useDispatch, useSelector } from "react-redux"
-import { addVideos } from "../store/searchedVideosSlice"
-import { RootState } from "../store"
+// import { useDispatch, useSelector } from "react-redux"
+// import { addVideos } from "../store/searchedVideosSlice"
+// import { RootState } from "../store"
 
 export default function SearchResults() {
 
@@ -16,8 +16,8 @@ export default function SearchResults() {
   const [isLoading, setIsLoading] = useState(true);
   const [nextPageToken, setNextPageToken] = useState('')
 
-  const dispatch = useDispatch()
-  const searchStore = useSelector((store: RootState) => store.searchVideo)
+  // const dispatch = useDispatch()
+  // const searchStore = useSelector((store: RootState) => store.searchVideo)
   // const searchResults = searchStore[search_query]
   const getSearchResults = async () => {
     // if (search_query === '') return
