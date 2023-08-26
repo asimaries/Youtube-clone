@@ -1,11 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
-import appReducer from "./appSlice";
-import searchReducer from "./searchSlice";
+import appSlice from "./appSlice";
+import searchSlice from "./searchSlice";
+import chatSlice from "./chatSlice";
+import popularVideoSlice from "./popularVideoSlice";
+import searchedVideosSlice from "./searchedVideosSlice";
 
 const store = configureStore({
   reducer: {
-    app: appReducer,
-    search: searchReducer,
+    app: appSlice,
+    search: searchSlice,
+    chat: chatSlice,
+    popularVideo: popularVideoSlice,
+    searchVideo: searchedVideosSlice
   },
 })
 

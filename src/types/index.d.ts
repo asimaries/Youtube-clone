@@ -1,28 +1,31 @@
-type Video = {
+interface VideoInfo {
+  id: {
+    videoId: string,
+  },
+  snippet: VideoSnippet;
+}
+
+interface VideoSnippet {
+  publishedAt: string;
+  channelId: string;
+  title: string;
+  description: string;
+  thumbnails: Thumbnail;
+  channelTitle: string;
+  tags: string[];
+  categoryId: string;
+  liveBroadcastContent: string;
+  localized: {
+    title: string;
+    description: string;
+  };
+};
+
+interface Video {
   kind: string;
   etag: string;
   id: string;
-  snippet: {
-    publishedAt: string;
-    channelId: string;
-    title: string;
-    description: string;
-    thumbnails: {
-      default: Thumbnail;
-      medium: Thumbnail;
-      high: Thumbnail;
-      standard: Thumbnail;
-      maxres: Thumbnail;
-    };
-    channelTitle: string;
-    tags: string[];
-    categoryId: string;
-    liveBroadcastContent: string;
-    localized: {
-      title: string;
-      description: string;
-    };
-  };
+  snippet: VideoSnippet;
   contentDetails: {
     duration: string;
     dimension: string;
@@ -43,9 +46,36 @@ type Video = {
   };
 }
 
-interface Thumbnail {
+
+
+interface ThumbnailProperties {
   url: string;
   width: number;
   height: number;
 }
 
+interface Thumbnail {
+
+  default: ThumbnailProperties;
+  medium: ThumbnailProperties;
+  high: ThumbnailProperties;
+  standard: ThumbnailProperties;
+  maxres: ThumbnailProperties;
+
+}
+
+
+
+interface IsearchResults {
+  nextPageToken: string,
+  items: [
+    VideoInfo
+  ]
+}
+
+
+interface IComment {
+  name: string,
+  text: string,
+  replies: IComment[]
+}

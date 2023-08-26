@@ -26,12 +26,13 @@ export default function SideBar() {
 
   if (!isMenuOpen) return null
   return (
-    <div className="text-sm my-1">
+    <div className="text-sm my-1 ">
       <ul>
         {sectionList.map(ele => <li key={ele.name} className={sectionStyle}>
           <ele.icon size={18} />
           <h6 className="ml-4">{ele.name}</h6>
         </li>)}
+
         <hr />
         {libraryList.map(ele => <li key={ele.name} className={sectionStyle}>
           <ele.icon size={18} />

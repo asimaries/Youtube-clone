@@ -1,23 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { BsSearch, BsFillMicFill } from 'react-icons/bs'
-import { debounce } from '../utils/debounce'
 import useLocalStorage from '../hooks/useLocalStorage'
 import axios from 'axios'
 import { SEARCH_AUTOCOMPLETE_API } from '../constants'
 import { useDispatch, useSelector } from 'react-redux'
-import store, { RootState } from '../store'
+import { RootState } from '../store'
 import { cacheResults } from '../store/searchSlice'
+import { Form, useNavigate } from 'react-router-dom'
+import useSpeechToText from '../hooks/useSpeechToText'
 
-export default function Search() {
+export default function SearchBar() {
 
+  const { isDone, toggleButtonRef, transcribedText, listingStatus } = useSpeechToText()
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [showLastSearchs, setShowLastSearchs] = useState(false)
   const [lastSearch, setLastSearch] = useState<string[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
+  const formRef = useRef<HTMLButtonElement>(null)
   const { setLocalItem, getLocalItem } = useLocalStorage()
   const [suggestions, setSuggestions] = useState<string[]>([])
   const dispatch = useDispatch()
-
   const searchCache = useSelector((store: RootState) => store.search)
 
   const getSuggestions = async () => {
@@ -41,6 +44,12 @@ export default function Search() {
     return () => { clearTimeout(timer) }
   }, [searchQuery])
 
+  useEffect(() => {
+    console.log(transcribedText)
+    setSearchQuery(transcribedText)
+    console.log(isDone)
+    if (isDone) formRef.current?.click()
+  }, [transcribedText, isDone])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value)
@@ -57,6 +66,7 @@ export default function Search() {
 
   function unLoadLastSearchs() {
     setTimeout(() => { setShowLastSearchs(false) }, 100)
+    // setShowLastSearchs(false)
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -64,10 +74,12 @@ export default function Search() {
     if (searchQuery === '') return
     let data: Array<string> | null = getLocalItem('lastSearch')
     if (data == null) data = []
-    data = [searchQuery, ...data]
+    if (!data.includes(searchQuery))
+      data = [searchQuery, ...data]
     setShowLastSearchs(false)
     setLocalItem('lastSearch', data)
     setLastSearch(data)
+    navigate(`/results?search_query=${searchQuery}`)
   }
 
   function searchElement(event: React.MouseEvent<HTMLSpanElement>, value: string) {
@@ -75,22 +87,24 @@ export default function Search() {
     inputRef.current!.value = value
   }
 
-  function removeElement(event: React.MouseEvent<HTMLButtonElement>, element: string) {
-    console.log(element)
+  function removeElement(event: React.MouseEvent<HTMLDivElement>, element: string) {
+    // console.log(element)
+    event.stopPropagation()
     let data: Array<string> = getLocalItem('lastSearch')
-    console.log(data)
+    // console.log(data)
     data = data.filter((value) => value !== element)
     console.log(data)
     setLocalItem('lastSearch', data)
     setLastSearch(data)
   }
-
-
+  // console.log(transcribedText)
   return (
-    <form className='flex' onSubmit={handleSubmit}>
+    <form className='flex'
+      onSubmit={handleSubmit} >
       <div className=' h-10 flex flex-col'>
         <div className="flex border rounded-full">
           <input className='h-10 w-96 text-sm px-4 rounded-l-full bg-inherit'
+            value={searchQuery}
             ref={inputRef}
             type="text"
             placeholder='Search'
@@ -98,27 +112,34 @@ export default function Search() {
             onFocus={loadLastSearchs}
             onBlur={unLoadLastSearchs}
           />
-          <button type='submit' className='w-16 grid place-items-center rounded-r-full bg-neutral-600 hover:bg-neutral-700' onClick={() => { console.log('search') }}><BsSearch /></button>
+          <button
+            // onFocus={loadLastSearchs}
+            ref={formRef}
+            type='submit' className='w-16 grid place-items-center rounded-r-full bg-neutral-600 hover:bg-neutral-700 ' onClick={() => { console.log('search') }}><BsSearch /></button>
         </div>
+        <div
+          onBlur={unLoadLastSearchs}>
 
-        {showLastSearchs ? <div className=' bg-neutral-800  rounded-xl shadow-neutral-900 shadow-md '>
-          <ul className='flex flex-col'>
-            {lastSearch.map((ele) => {
-              return (<li className='flex justify-between rounded-full  hover:bg-neutral-700' key={ele}>
-                <span onClick={(e) => searchElement(e, ele)} className='px-2 py-1'>{ele}</span>
-                <button onClick={(e) => removeElement(e, ele)} className='text-blue-500 px-2 hover:underline'>remove</button>
-              </li>)
-            })}
-            {suggestions.map((ele) => {
-              return (<li className='flex justify-between rounded-full  hover:bg-neutral-700' key={ele}>
-                <span onClick={(e) => searchElement(e, ele)} className='px-2 py-1'>{ele}</span>
-                {/* <button onClick={(e) => removeElement(e, ele)} className='text-blue-500 px-2 hover:underline'>remove</button> */}
-              </li>)
-            })}
-          </ul>
-        </div> : null}
+          {showLastSearchs ? <div className=' bg-neutral-800  rounded-xl shadow-neutral-900 shadow-md w-full  '
+          >
+            <div className='flex flex-col'>
+              {lastSearch.map((ele) => (
+                <button onClick={(e) => searchElement(e, ele)} className=' flex justify-between items-center rounded-full  hover:bg-neutral-700' key={ele} >
+                  <div className='px-3 py-1'>{ele}</div>
+                  <div onClick={(e) => removeElement(e, ele)} className='  text-red-500 px-2 hover:underline transition'>remove</div>
+                </button>
+              ))}
+              {suggestions.map((ele) => (
+                <button onClick={(e) => searchElement(e, ele)} className=' flex justify-between items-center rounded-full  hover:bg-neutral-700' key={ele}>
+                  <div className='px-3 py-1'>{ele}</div>
+                </button>
+              ))}
+            </div>
+          </div> : null}
+        </div>
       </div>
-      <button className='mx-8 bg-neutral-600 bg-opacity-40 hover:bg-opacity-80 p-3 rounded-full'> <BsFillMicFill /> </button>
+      <button type='button'
+        disabled={listingStatus} ref={toggleButtonRef} className='mx-8 bg-neutral-600 bg-opacity-40 hover:bg-opacity-80 p-3 rounded-full disabled:opacity-20'> <BsFillMicFill /> </button>
     </form>
   )
 }

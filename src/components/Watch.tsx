@@ -7,6 +7,7 @@ import CommentSection from './CommentSection'
 import { VIDEO_INFO_API } from '../constants'
 import axios from 'axios'
 import useDocumentTitle from '../hooks/useDocumentTitle'
+import LiveChat from './LiveChat'
 
 type IvideoInfo = {
   snippet: {
@@ -33,15 +34,23 @@ export default function Watch() {
 
   return (
     !videoInfo ? <div>Loading..</div> :
-      <div className='h-auto w-full m-3'>
-        <iframe
-          className='aspect-video w-3/5'
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1`}
-          autoFocus
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowFullScreen></iframe>
-        <h1 className='font-bold text-lg'>{videoInfo?.snippet.title!}</h1>
-        <CommentSection />
-      </div >
+      <div className='w-full  m-3'>
+        <div className="flex">
+          <div className=''>
+            <iframe
+              className='aspect-video w-[1000px]'
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=0&mute=1`}
+              autoFocus
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen></iframe>
+            <h1 className='font-bold text-lg'>{videoInfo?.snippet.title!}</h1>
+          </div>
+          <LiveChat />
+        </div>
+        <div className=''>
+          <CommentSection />
+          <div className='w-'></div>
+        </div>
+      </div>
   )
 }

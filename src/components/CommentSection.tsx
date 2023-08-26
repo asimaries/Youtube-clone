@@ -1,10 +1,3 @@
-
-interface IComment {
-  name: string,
-  text: string,
-  replies: IComment[]
-}
-
 const commentData = [
   {
     name: 'Hanzla',
@@ -108,7 +101,7 @@ const CommentsList = ({ commentsList }: { commentsList: IComment[] }) => (
 
 export default function CommentSection() {
   return (
-    <div className='my-3 mx-1'>
+    <div className='my-3 mx-1 w-[1000px]'>
       <h2 className='font-bold text-xl'>Comments</h2>
       <input type="text" />
       <button className='bg-slate-500'>comment</button>

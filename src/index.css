@@ -17,6 +17,10 @@
 @tailwind components;
 @tailwind utilities;
 
+a {
+  max-width: fit-content;
+}
+
 * {
   /* outline: 1px solid rgba(255, 255, 255, 0.1); */
 }

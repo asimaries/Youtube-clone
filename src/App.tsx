@@ -1,19 +1,20 @@
 import './App.css'
 import Body from './components/Body'
 import Head from './components/Head'
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Offline from './components/Offline'
 import Error from './components/Error'
 import { Provider } from 'react-redux'
 import store from './store'
 import Watch from './components/Watch'
 import MainContainer from './components/MainContainer'
+import SearchResults from './components/SearchResults'
 
 const Layout = () => {
   let isOnline = true
   return (
     <Provider store={store}>
-      <div className='px-3 min-h-screen'>
+      <div className='px-3'>
         <Head />
         {isOnline ? <Body /> : <Offline />}
       </div>
@@ -34,7 +35,10 @@ const router = createBrowserRouter([
       {
         path: 'watch',
         element: <Watch />
-
+      },
+      {
+        path: 'results',
+        element: <SearchResults />
       },
     ]
   }
