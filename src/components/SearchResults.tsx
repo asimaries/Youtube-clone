@@ -27,8 +27,8 @@ export default function SearchResults() {
     try {
       const { data } = await axios(SEARCH_QUERY_API(search_query, nextPageToken))
       // dispatch(addVideos({ key: search_query, videosList: data.items }))
-      setSearchResults(data.items)
-      setNextPageToken(nextPageToken)
+      setSearchResults(prev => [...prev, ...data.items])
+      setNextPageToken(data.nextPageToken)
     } catch (error: any) {
       setError(error)
     } finally {
@@ -56,9 +56,7 @@ export default function SearchResults() {
   return (
     <div className="w-full ">
       <div className="flex flex-col items-center">
-        {!isLoading ?
-          searchResults.map((video) => <FlatVideoCard key={video.id.videoId} video={video} />) :
-          null}
+        {searchResults.length > 0 ? searchResults.map((video) => <FlatVideoCard key={video.id.videoId} video={video} />) : null}
         {isLoading ? <h3> Loading......</h3> : null}
       </div>
     </div >
